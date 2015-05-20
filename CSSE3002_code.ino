@@ -41,6 +41,7 @@ void setup() {
 
 void loop() {
   if(runningMode) {
+    //displayCycleTwo(); // Use this, comment out below line, to test that the mode switch button works.
     runningCycle();
   } else {
     displayCycle();
@@ -160,6 +161,46 @@ void displayCycle() {
  digitalWrite(RIGHT_3, LOW);
  digitalWrite(RIGHT_4, HIGH);
  delay(500);
+}
+
+/* A second display cycle to be used for testing the button temporarily */
+void displayCycleTwo() {
+  digitalWrite(LEFT_1, HIGH);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, HIGH);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(500);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, HIGH);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, HIGH);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(500);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, HIGH);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, HIGH);
+  digitalWrite(RIGHT_4, LOW);
+  delay(500);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, HIGH);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, HIGH);
+  delay(500);
 }
 
 /* Light sequence to display on powering on */
