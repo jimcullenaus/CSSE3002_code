@@ -39,6 +39,9 @@ void setup() {
 
 }
 
+/* Fairly sure this code should never be entered except immediately after the initial setup.
+ * All other transitions between running mode and display mode should be done via the interrupt and modeSwitch
+ */
 void loop() {
   if(runningMode) {
     //displayCycleTwo(); // Use this, comment out below line, to test that the mode switch button works.
@@ -65,7 +68,8 @@ void enterRunningMode() {
   rightLeg();
   delay(100);
   off();
-  
+  runningCycle();
+  //displayCycleTwo(); // Use this, comment out below line, to test that the mode switch button works.
 }
 
 /* Show this pattern when entering display mode */
@@ -74,10 +78,11 @@ void enterDisplayMode() {
   on();
   delay(100);
   off();
+  displayCycle();
 }
 
 /* Wait for either the left leg or the right leg to sensor to trigger, then light up that leg 
-    - currently badly written. May loop infinitely, need to figure out a better way.*/
+    - currently badly written. May loop infinitely, need to figure out a better way. */
 void runningCycle() {
   while(true) {
     int right = analogRead(RIGHT_SENSOR);
