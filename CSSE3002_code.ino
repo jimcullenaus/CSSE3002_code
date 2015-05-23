@@ -278,6 +278,79 @@ void displayPowerOn() {
   digitalWrite(RIGHT_4, LOW);
 }
 
-
+void displayPowerOnTwo() {
+  digitalWrite(LEFT_1, HIGH);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(250);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, HIGH);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(250);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, HIGH);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(250);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, HIGH);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(250);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, HIGH);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(250);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, HIGH);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, LOW);
+  delay(250);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, HIGH);
+  digitalWrite(RIGHT_4, LOW);
+  delay(250);
+  digitalWrite(LEFT_1, LOW);
+  digitalWrite(LEFT_2, LOW);
+  digitalWrite(LEFT_3, LOW);
+  digitalWrite(LEFT_4, LOW);
+  digitalWrite(RIGHT_1, LOW);
+  digitalWrite(RIGHT_2, LOW);
+  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_4, HIGH);
+  delay(250);
+}
 
 
