@@ -37,7 +37,7 @@ void setup() {
   pinMode(RIGHT_SENSOR, INPUT);
   pinMode(LEFT_SENSOR, INPUT);
   
-  displayPowerOn();
+  displayPowerOnTwo();
 
 }
 
