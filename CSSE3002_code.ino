@@ -1,4 +1,4 @@
-#define LEFT_1 l2 // Light Set 1
+#define LEFT_1 2 // Light Set 1
 #define LEFT_2 3 // Light Set 2
 #define LEFT_3 4 // Light Set 3
 #define LEFT_4 5 // Light Set 4
