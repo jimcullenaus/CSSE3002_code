@@ -60,18 +60,24 @@ void offMode() {
 
 void runningCycle() {
   modeSetup();
+  int loopsSinceToggle = 20;
   while(true) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
-    
-    if (signal()) {
-      toggleLight();
-      delay(STEP_DELAY);
+
+    if (loopsSinceToggle >= 20) {
+      if (signal()) {
+        toggleLight();
+        delay(STEP_DELAY);
+      } else {
+        off();
+      }
+      if (checkButton()) {
+        return;
+      }
+      loopsSinceToggle = 0;
     } else {
-      off();
-    }
-    if (checkButton()) {
-      return;
+      ++loopsSinceToggle;
     }
   }
 }
@@ -85,7 +91,7 @@ boolean signal() {
   int highest = 0;
   boolean continuous = false;
   
-  for (int i = 0; i < 30; ++i) {
+  for (int i = 0; i < 20; ++i) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
     if (left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
@@ -99,7 +105,7 @@ boolean signal() {
       count = 0;
     }
   }
-  if (highest >= 20) {
+  if (highest >= 10) {
     return true;
   } else {
     return false;
