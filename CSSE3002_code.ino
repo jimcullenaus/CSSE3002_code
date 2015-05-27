@@ -1,19 +1,19 @@
-#define LEFT_1 1 // Light Set 1
-#define LEFT_2 2 // Light Set 2
-#define LEFT_3 3 // Light Set 3
-#define LEFT_4 4 // Light Set 4
-#define RIGHT_1 5 // Light Set 5
-#define RIGHT_2 6 // Light Set 6
-#define RIGHT_3 7 // Light Set 7
-#define RIGHT_4 8 // Light Set 8
+#define LEFT_1 2 // Light Set 1
+#define LEFT_2 3 // Light Set 2
+#define LEFT_3 4 // Light Set 3
+#define LEFT_4 5 // Light Set 4
+#define RIGHT_1 6 // Light Set 5
+#define RIGHT_2 7 // Light Set 6
+#define RIGHT_3 8 // Light Set 7
+#define RIGHT_4 9 // Light Set 8
 
 #define MODE_BUTTON A2 // Mode switch button (pin 2 for interrupts)
 
 #define RIGHT_SENSOR A3 // Right leg accerlerometer pin
 #define LEFT_SENSOR A4 // Left leg accerlerometer pin
 #define FAKE_TIME 500 // Time for the fake running
-const int STEP_THRESHOLD = 200;
-volatile boolean runningMode = true;
+const int STEP_THRESHOLD = 1000;
+volatile boolean runningMode = false;
 boolean LEFT_ON = false;
 
 
@@ -69,7 +69,7 @@ void enterRunningMode() {
   rightLeg();
   delay(100);
   off();
-  runningCycle();
+  testRunningCycle();
   //displayCycleTwo(); // Use this, comment out below line, to test that the mode switch button works.
 }
 
