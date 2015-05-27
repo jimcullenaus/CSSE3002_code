@@ -11,6 +11,8 @@
 
 #define RIGHT_SENSOR A3 // Right leg accerlerometer pin
 #define LEFT_SENSOR A4 // Left leg accerlerometer pin
+
+#define STEP_DELAY 250
 const int STEP_THRESHOLD = 1000;
 // 0 is off, 1 is running mode, 2 is display mode
 volatile int runningMode = 0;
@@ -64,7 +66,7 @@ void runningCycle() {
     
     if (signal()) {
       toggleLight();
-      delay(100);
+      delay(STEP_DELAY);
     } else {
       off();
     }
