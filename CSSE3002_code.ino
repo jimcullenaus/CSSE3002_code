@@ -82,16 +82,28 @@ void runningCycle() {
  **/
 boolean signal() {
   int count = 0;
+  int highest = 0;
+  boolean continuous = false;
+  
   for (int i = 0; i < 20; ++i) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
     if (left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
       ++count;
+      continuous = true;
+    } else {
+      continuous = false;
+      if (count > highest) {
+        highest = count;
+      }
+      count = 0;
     }
   }
-  if (count >= 10) {
+  if (highest >= 10) {
     return true;
-  } else return false;
+  } else {
+    return false;
+  }
 }
 
 void modeSetup() {
