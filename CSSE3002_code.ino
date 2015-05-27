@@ -11,7 +11,6 @@
 
 #define RIGHT_SENSOR A3 // Right leg accerlerometer pin
 #define LEFT_SENSOR A4 // Left leg accerlerometer pin
-#define FAKE_TIME 500 // Time for the fake running
 const int STEP_THRESHOLD = 1000;
 // 0 is off, 1 is running mode, 2 is display mode
 volatile int runningMode = 0;
@@ -20,7 +19,6 @@ boolean leftOn = false;
 
 void setup() {
   pinMode(LEFT_1, OUTPUT);
-  
   pinMode(LEFT_2, OUTPUT);
   pinMode(LEFT_3, OUTPUT);
   pinMode(LEFT_4, OUTPUT);
@@ -67,6 +65,8 @@ void runningCycle() {
     if(left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
       toggleLight();
       delay(1000);
+    } else {
+      off();
     }
     if (checkButton()) {
       return;
