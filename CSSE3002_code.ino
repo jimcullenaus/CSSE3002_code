@@ -68,7 +68,7 @@ void runningCycle() {
     if (loopsSinceToggle >= 10) {
       if (signal()) {
         toggleLight();
-        delay(STEP_DELAY);
+        //delay(STEP_DELAY);
       } else {
         off();
       }
