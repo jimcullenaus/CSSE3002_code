@@ -1,4 +1,3 @@
-
 #define LEFT_1 1 // Light Set 1
 #define LEFT_2 2 // Light Set 2
 #define LEFT_3 3 // Light Set 3
@@ -8,10 +7,10 @@
 #define RIGHT_3 7 // Light Set 7
 #define RIGHT_4 8 // Light Set 8
 
-#define MODE_BUTTON 9 // Mode switch button (pin 2 for interrupts)
+#define MODE_BUTTON A2 // Mode switch button (pin 2 for interrupts)
 
-#define RIGHT_SENSOR A1 // Right leg accerlerometer pin
-#define LEFT_SENSOR A2 // Left leg accerlerometer pin
+#define RIGHT_SENSOR A3 // Right leg accerlerometer pin
+#define LEFT_SENSOR A4 // Left leg accerlerometer pin
 #define FAKE_TIME 500 // Time for the fake running
 const int STEP_THRESHOLD = 200;
 volatile boolean runningMode = true;
@@ -32,7 +31,7 @@ void setup() {
   pinMode(MODE_BUTTON, INPUT);
   
   // Interrupt for mode button. Hopefully this sequencer has interrupts (I know of a work around if there isn't)
-  attachInterrupt(0, modeSwitch, LOW);
+  attachInterrupt(0, modeSwitch, RISING);
   // Not sure if these analog pins are set up right
   pinMode(RIGHT_SENSOR, INPUT);
   pinMode(LEFT_SENSOR, INPUT);
@@ -287,7 +286,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, LOW);
   digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, LOW);
-  delay(250);
+  delay(1500);
   digitalWrite(LEFT_1, LOW);
   digitalWrite(LEFT_2, HIGH);
   digitalWrite(LEFT_3, LOW);
@@ -296,7 +295,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, LOW);
   digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, LOW);
-  delay(250);
+  delay(1500);
   digitalWrite(LEFT_1, LOW);
   digitalWrite(LEFT_2, LOW);
   digitalWrite(LEFT_3, HIGH);
@@ -305,7 +304,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, LOW);
   digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, LOW);
-  delay(250);
+  delay(1500);
   digitalWrite(LEFT_1, LOW);
   digitalWrite(LEFT_2, LOW);
   digitalWrite(LEFT_3, LOW);
@@ -314,7 +313,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, LOW);
   digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, LOW);
-  delay(250);
+  delay(1500);
   digitalWrite(LEFT_1, LOW);
   digitalWrite(LEFT_2, LOW);
   digitalWrite(LEFT_3, LOW);
@@ -323,7 +322,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, LOW);
   digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, LOW);
-  delay(250);
+  delay(1500);
   digitalWrite(LEFT_1, LOW);
   digitalWrite(LEFT_2, LOW);
   digitalWrite(LEFT_3, LOW);
@@ -332,7 +331,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, HIGH);
   digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, LOW);
-  delay(250);
+  delay(1500);
   digitalWrite(LEFT_1, LOW);
   digitalWrite(LEFT_2, LOW);
   digitalWrite(LEFT_3, LOW);
@@ -341,7 +340,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, LOW);
   digitalWrite(RIGHT_3, HIGH);
   digitalWrite(RIGHT_4, LOW);
-  delay(250);
+  delay(1500);
   digitalWrite(LEFT_1, LOW);
   digitalWrite(LEFT_2, LOW);
   digitalWrite(LEFT_3, LOW);
@@ -350,7 +349,7 @@ void displayPowerOnTwo() {
   digitalWrite(RIGHT_2, LOW);
   digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, HIGH);
-  delay(250);
+  delay(1500);
 }
 
 
