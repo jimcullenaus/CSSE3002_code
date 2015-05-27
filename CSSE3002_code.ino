@@ -60,12 +60,12 @@ void offMode() {
 
 void runningCycle() {
   modeSetup();
-  int loopsSinceToggle = 30;
+  int loopsSinceToggle = 200;
   while(true) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
 
-    if (loopsSinceToggle >= 30) {
+    if (loopsSinceToggle >= 200) {
       if (signal()) {
         toggleLight();
         delay(STEP_DELAY);
