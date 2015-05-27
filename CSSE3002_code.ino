@@ -10,7 +10,7 @@
 #define MODE_BUTTON A2 // Mode switch button (pin 2 for interrupts)
 
 #define RIGHT_SENSOR A3 // Right leg accerlerometer pin
-#define LEFT_SENSOR A4 // Left leg accerlerometer pin
+#define LEFT_SENSOR A5 // Left leg accerlerometer pin
 
 #define STEP_DELAY 250
 const int STEP_THRESHOLD = 1000;
@@ -85,7 +85,7 @@ boolean signal() {
   int highest = 0;
   boolean continuous = false;
   
-  for (int i = 0; i < 20; ++i) {
+  for (int i = 0; i < 30; ++i) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
     if (left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
@@ -99,7 +99,7 @@ boolean signal() {
       count = 0;
     }
   }
-  if (highest >= 10) {
+  if (highest >= 20) {
     return true;
   } else {
     return false;
