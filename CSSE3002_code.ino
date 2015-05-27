@@ -13,7 +13,7 @@
 #define LEFT_SENSOR A5 // Left leg accerlerometer pin
 
 #define STEP_DELAY 250
-const int STEP_THRESHOLD = 1000;
+const int STEP_THRESHOLD = 700;
 // 0 is off, 1 is running mode, 2 is display mode
 volatile int runningMode = 0;
 volatile boolean buttonReady = true; // True when button is ready to be clicked
@@ -65,7 +65,7 @@ void runningCycle() {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
 
-    if (loopsSinceToggle >= 200) {
+    if (loopsSinceToggle >= 400) {
       if (signal()) {
         toggleLight();
         delay(STEP_DELAY);
@@ -92,7 +92,7 @@ boolean signal() {
   int highest = 0;
   boolean continuous = false;
   
-  for (int i = 0; i < 20; ++i) {
+  for (int i = 0; i < 30; ++i) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
     if (left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
