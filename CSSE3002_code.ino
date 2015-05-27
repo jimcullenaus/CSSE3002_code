@@ -12,7 +12,7 @@
 #define RIGHT_SENSOR A3 // Right leg accerlerometer pin
 #define LEFT_SENSOR A4 // Left leg accerlerometer pin
 #define FAKE_TIME 500 // Time for the fake running
-const int STEP_THRESHOLD = 120;
+const int STEP_THRESHOLD = 1000;
 // 0 is off, 1 is running mode, 2 is display mode
 volatile int runningMode = 0;
 volatile boolean buttonDown = true; // True when button is ready to be clicked
