@@ -304,7 +304,7 @@ void displayPowerOnTwo() {
   digitalWrite(LEFT_4, LOW);
   digitalWrite(RIGHT_1, LOW);
   digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, LOW);
+  digitalWrite(RIGHT_3, HIGH);
   digitalWrite(RIGHT_4, LOW);
   delay(1500);
   digitalWrite(LEFT_1, LOW);
