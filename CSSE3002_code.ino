@@ -79,7 +79,7 @@ void runningCycle() {
  *  return true. Otherwise, return false.
  **/
 boolean signal() {
-  count = 0;
+  int count = 0;
   for (int i = 0; i < 20; ++i) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
