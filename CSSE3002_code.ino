@@ -15,6 +15,7 @@
 const int STEP_THRESHOLD = 120;
 // 0 is off, 1 is running mode, 2 is display mode
 volatile int runningMode = 0;
+volatile boolean buttonDown = true; // True when button is ready to be clicked
 boolean leftOn = false;
 
 void setup() {
@@ -274,9 +275,12 @@ void toggleLight() {
 }
 
 boolean checkButton() {
-  if (digitalRead(MODE_BUTTON) == HIGH) {
+  if (digitalRead(MODE_BUTTON) == HIGH && buttonDown) {
     runningMode = (runningMode + 1) % 3;
+    buttonDown = !buttonDown;
     return true;
+  } else if (buttonDown) {
+    buttonDown = !buttonDown;
   } else {
     return false;
   }
