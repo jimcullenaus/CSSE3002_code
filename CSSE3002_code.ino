@@ -62,9 +62,9 @@ void runningCycle() {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
     
-    if(left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
+    if (signal()) {
       toggleLight();
-      delay(1000);
+      delay(100);
     } else {
       off();
     }
@@ -72,6 +72,24 @@ void runningCycle() {
       return;
     }
   }
+}
+
+/** Check if there is a signal from the vibration sensors.
+ *  Read a number of times, and if enough of those times are over the threshold,
+ *  return true. Otherwise, return false.
+ **/
+boolean signal() {
+  count = 0;
+  for (int i = 0; i < 20; ++i) {
+    int right = analogRead(RIGHT_SENSOR);
+    int left = analogRead(LEFT_SENSOR);
+    if (left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
+      ++count;
+    }
+  }
+  if (count >= 10) {
+    return true;
+  } else return false;
 }
 
 void modeSetup() {
