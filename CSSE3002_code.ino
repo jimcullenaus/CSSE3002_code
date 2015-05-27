@@ -65,7 +65,7 @@ void runningCycle() {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
 
-    if (loopsSinceToggle >= 20) {
+    if (loopsSinceToggle >= 30) {
       if (signal()) {
         toggleLight();
         delay(STEP_DELAY);
