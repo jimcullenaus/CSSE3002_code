@@ -1,4 +1,4 @@
-#define LEFT_1 2 // Light Set 1
+#define LEFT_1 l2 // Light Set 1
 #define LEFT_2 3 // Light Set 2
 #define LEFT_3 4 // Light Set 3
 #define LEFT_4 5 // Light Set 4
@@ -13,7 +13,7 @@
 #define LEFT_SENSOR A4 // Left leg accerlerometer pin
 #define FAKE_TIME 500 // Time for the fake running
 const int STEP_THRESHOLD = 1000;
-volatile boolean runningMode = false;
+volatile boolean runningMode = true;
 boolean LEFT_ON = false;
 
 
@@ -69,7 +69,8 @@ void enterRunningMode() {
   rightLeg();
   delay(100);
   off();
-  testRunningCycle();
+  //testRunningCycle();
+  runningCycle();
   //displayCycleTwo(); // Use this, comment out below line, to test that the mode switch button works.
 }
 
@@ -278,6 +279,7 @@ void displayPowerOn() {
 }
 
 void displayPowerOnTwo() {
+  delay(5000);
   digitalWrite(LEFT_1, HIGH);
   digitalWrite(LEFT_2, LOW);
   digitalWrite(LEFT_3, LOW);
