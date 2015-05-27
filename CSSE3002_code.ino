@@ -60,7 +60,7 @@ void offMode() {
 
 void runningCycle() {
   modeSetup();
-  int loopsSinceToggle = 20;
+  int loopsSinceToggle = 30;
   while(true) {
     int right = analogRead(RIGHT_SENSOR);
     int left = analogRead(LEFT_SENSOR);
