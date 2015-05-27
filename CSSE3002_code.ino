@@ -7,13 +7,13 @@
 #define RIGHT_3 2 // Light Set 7
 #define RIGHT_4 5 // Light Set 8
 
-#define MODE_BUTTON A5 // Mode switch button (pin 2 for interrupts)
+#define MODE_BUTTON A2 // Mode switch button (pin 2 for interrupts)
 
 #define RIGHT_SENSOR A3 // Right leg accerlerometer pin
 #define LEFT_SENSOR A4 // Left leg accerlerometer pin
 #define FAKE_TIME 500 // Time for the fake running
 const int STEP_THRESHOLD = 1000;
-volatile boolean runningMode = true;
+volatile boolean runningMode = false;
 boolean LEFT_ON = false;
 
 void setup() {
@@ -52,7 +52,7 @@ void runningCycle() {
     
     if(left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
       toggleLight();
-      delay(300);
+      delay(1000);
     }
     if (checkButton()) {
       return;
