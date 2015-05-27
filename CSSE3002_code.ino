@@ -31,7 +31,7 @@ void setup() {
   pinMode(MODE_BUTTON, INPUT);
   
   // Interrupt for mode button. Hopefully this sequencer has interrupts (I know of a work around if there isn't)
-  attachInterrupt(0, modeSwitch, RISING);
+  //attachInterrupt(0, modeSwitch, RISING);
   // Not sure if these analog pins are set up right
   pinMode(RIGHT_SENSOR, INPUT);
   pinMode(LEFT_SENSOR, INPUT);
@@ -304,7 +304,7 @@ void displayPowerOnTwo() {
   digitalWrite(LEFT_4, LOW);
   digitalWrite(RIGHT_1, LOW);
   digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, HIGH);
+  digitalWrite(RIGHT_3, LOW);
   digitalWrite(RIGHT_4, LOW);
   delay(1500);
   digitalWrite(LEFT_1, LOW);
