@@ -15,7 +15,7 @@
 const int STEP_THRESHOLD = 120;
 // 0 is off, 1 is running mode, 2 is display mode
 volatile int runningMode = 0;
-boolean LEFT_ON = false;
+boolean leftOn = false;
 
 void setup() {
   pinMode(LEFT_1, OUTPUT);
@@ -264,10 +264,12 @@ void rightLeg() {
 }
 
 void toggleLight() {
-  if (LEFT_ON) {
+  if (leftOn) {
     rightLeg();
+    leftOn = false;
   } else {
     leftLeg();
+    leftOn = true;
   }
 }
 
