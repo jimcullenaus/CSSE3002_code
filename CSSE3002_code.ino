@@ -279,7 +279,7 @@ boolean checkButton() {
     runningMode = (runningMode + 1) % 3;
     buttonReady = !buttonReady;
     return true;
-  } else if (!buttonReady) {
+  } else if ((digitalRead(MODE_BUTTON) == LOW) && !buttonReady) {
     buttonReady = !buttonReady;
   } else {
     return false;
