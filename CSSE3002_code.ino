@@ -7,7 +7,7 @@
 #define RIGHT_3 2 // Light Set 7
 #define RIGHT_4 5 // Light Set 8
 
-#define MODE_BUTTON A2 // Mode switch button (pin 2 for interrupts)
+#define MODE_BUTTON A5 // Mode switch button (pin 2 for interrupts)
 
 #define RIGHT_SENSOR A3 // Right leg accerlerometer pin
 #define LEFT_SENSOR A4 // Left leg accerlerometer pin
