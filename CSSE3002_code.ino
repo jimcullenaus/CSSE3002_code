@@ -12,7 +12,7 @@
 #define RIGHT_SENSOR A3 // Right leg vibration sensor pin
 #define LEFT_SENSOR A5 // Left leg vibration sensor pin
 
-#define STEP_THRESHOLD 700
+#define STEP_THRESHOLD 1000
 
 volatile int mode = 0; // 0 off, 1 running, 2 display
 volatile boolean buttonReady = true; // True when button is ready to be clicked
