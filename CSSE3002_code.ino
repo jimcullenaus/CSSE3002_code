@@ -9,15 +9,14 @@
 
 #define MODE_BUTTON A2 // Mode switch button (pin 2 for interrupts)
 
-#define RIGHT_SENSOR A3 // Right leg accerlerometer pin
-#define LEFT_SENSOR A5 // Left leg accerlerometer pin
+#define RIGHT_SENSOR A3 // Right leg vibration sensor pin
+#define LEFT_SENSOR A5 // Left leg vibration sensor pin
 
-#define STEP_DELAY 250
-const int STEP_THRESHOLD = 700;
-// 0 is off, 1 is running mode, 2 is display mode
-volatile int runningMode = 0;
+#define STEP_THRESHOLD 700
+
+volatile int mode = 0; // 0 off, 1 running, 2 display
 volatile boolean buttonReady = true; // True when button is ready to be clicked
-boolean leftOn = false;
+boolean leftOn = false; // true when the left leg is being turned on next for running mode
 
 void setup() {
   pinMode(LEFT_1, OUTPUT);
@@ -27,50 +26,85 @@ void setup() {
   pinMode(RIGHT_1, OUTPUT);
   pinMode(RIGHT_2, OUTPUT);
   pinMode(RIGHT_3, OUTPUT);
-  pinMode(RIGHT_4, OUTPUT);  
+  pinMode(RIGHT_4, OUTPUT);
   
   pinMode(MODE_BUTTON, INPUT);
   
   pinMode(RIGHT_SENSOR, INPUT);
   pinMode(LEFT_SENSOR, INPUT);
   
-  displayPowerOn();
-
+  powerOn();
 }
 
 void loop() {
-  if(runningMode == 1) {
+  if (mode == 1) {
     runningCycle();
-  } else if (runningMode == 2) {
+  } else if (mode == 2) {
     displayCycle();
   } else {
     offMode();
   }
 }
 
-void offMode() {
-  off();
-  delay(200);
+/*void runningCycle() {
+  modeChange();
   while (true) {
+    right(1,1,1,1);
+    left(0,0,0,0);
+    delay(500);
+    if (checkButton()) {
+      return;
+    }
+    left(1,1,1,1);
+    right(0,0,0,0);
+    delay(500);
+    if (checkButton()) {
+      return;
+    }
+  }
+}*/
+
+/*
+void runningCycle() {
+  modeChange();
+  int index = 0;
+  boolean tests[10];
+  boolean signal = false;
+  
+  while (true) {
+    tests[index] = ((analogRead(RIGHT_SENSOR) >= STEP_THRESHOLD) || (analogRead(LEFT_SENSOR) >= STEP_THRESHOLD));
+    index = (index + 1) % 10;
+    for (int i = 0; i < 10; ++i) {
+      signal &= tests[i];
+    }
+    if (signal) {
+      toggleLight();
+      delay(500);
+      left(0,0,0,0);
+      right(0,0,0,0);
+      signal = false;
+      for (int i = 0; i < 10; ++i) {
+        tests[i] = false;
+      }
+    }
     if (checkButton()) {
       return;
     }
   }
 }
+*/
 
 void runningCycle() {
-  modeSetup();
+  modeChange();
   int loopsSinceToggle = 200;
   while(true) {
-    int right = analogRead(RIGHT_SENSOR);
-    int left = analogRead(LEFT_SENSOR);
-
     if (loopsSinceToggle >= 200) {
       if (signal()) {
         toggleLight();
-        delay(STEP_DELAY);
+        delay(500);
       } else {
-        off();
+        left(0,0,0,0);
+        right(0,0,0,0);
       }
       if (checkButton()) {
         return;
@@ -93,9 +127,9 @@ boolean signal() {
   boolean continuous = false;
   
   for (int i = 0; i < 20; ++i) {
-    int right = analogRead(RIGHT_SENSOR);
-    int left = analogRead(LEFT_SENSOR);
-    if (left >= STEP_THRESHOLD || right >= STEP_THRESHOLD) {
+    int rightRead = analogRead(RIGHT_SENSOR);
+    int leftRead = analogRead(LEFT_SENSOR);
+    if (leftRead >= STEP_THRESHOLD || rightRead >= STEP_THRESHOLD) {
       ++count;
       continuous = true;
     } else {
@@ -113,61 +147,29 @@ boolean signal() {
   }
 }
 
-void modeSetup() {
-  off();
-  delay(100);
-  on();
-  delay(200);
-  off();
-}
-
 void displayCycle() {
-  modeSetup();
+  modeChange();
   while (true) {
-    digitalWrite(LEFT_1, HIGH);
-    digitalWrite(LEFT_2, LOW);
-    digitalWrite(LEFT_3, LOW);
-    digitalWrite(LEFT_4, LOW);
-    digitalWrite(RIGHT_1, HIGH);
-    digitalWrite(RIGHT_2, LOW);
-    digitalWrite(RIGHT_3, LOW);
-    digitalWrite(RIGHT_4, LOW);
+    right(1,0,0,0);
+    left(1,0,0,0);
     delay(500);
     if (checkButton()) {
       return;
     }
-    digitalWrite(LEFT_1, LOW);
-    digitalWrite(LEFT_2, HIGH);
-    digitalWrite(LEFT_3, LOW);
-    digitalWrite(LEFT_4, LOW);
-    digitalWrite(RIGHT_1, LOW);
-    digitalWrite(RIGHT_2, HIGH);
-    digitalWrite(RIGHT_3, LOW);
-    digitalWrite(RIGHT_4, LOW);
+    right(0,1,0,0);
+    left(0,1,0,0);
     delay(500);
     if (checkButton()) {
       return;
     }
-    digitalWrite(LEFT_1, LOW);
-    digitalWrite(LEFT_2, LOW);
-    digitalWrite(LEFT_3, HIGH);
-    digitalWrite(LEFT_4, LOW);
-    digitalWrite(RIGHT_1, LOW);
-    digitalWrite(RIGHT_2, LOW);
-    digitalWrite(RIGHT_3, HIGH);
-    digitalWrite(RIGHT_4, LOW);
+    right(0,0,1,0);
+    left(0,0,1,0);
     delay(500);
     if (checkButton()) {
       return;
     }
-    digitalWrite(LEFT_1, LOW);
-    digitalWrite(LEFT_2, LOW);
-    digitalWrite(LEFT_3, LOW);
-    digitalWrite(LEFT_4, HIGH);
-    digitalWrite(RIGHT_1, LOW);
-    digitalWrite(RIGHT_2, LOW);
-    digitalWrite(RIGHT_3, LOW);
-    digitalWrite(RIGHT_4, HIGH);
+    right(0,0,0,1);
+    left(0,0,0,1);
     delay(500);
     if (checkButton()) {
       return;
@@ -175,147 +177,38 @@ void displayCycle() {
   }
 }
 
-void displayPowerOn() {
-  off();
-  digitalWrite(LEFT_1, HIGH);
-  digitalWrite(LEFT_2, LOW);
-  digitalWrite(LEFT_3, LOW);
-  digitalWrite(LEFT_4, LOW);
-  digitalWrite(RIGHT_1, LOW);
-  digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, LOW);
-  digitalWrite(RIGHT_4, LOW);
+/* standby mode: all off but responsive to the mode button */
+void offMode() {
+  left(0,0,0,0);
+  right(0,0,0,0);
   delay(200);
-  digitalWrite(LEFT_1, LOW);
-  digitalWrite(LEFT_2, HIGH);
-  digitalWrite(LEFT_3, LOW);
-  digitalWrite(LEFT_4, LOW);
-  digitalWrite(RIGHT_1, LOW);
-  digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, LOW);
-  digitalWrite(RIGHT_4, LOW);
-  delay(200);
-  digitalWrite(LEFT_1, LOW);
-  digitalWrite(LEFT_2, LOW);
-  digitalWrite(LEFT_3, HIGH);
-  digitalWrite(LEFT_4, LOW);
-  digitalWrite(RIGHT_1, LOW);
-  digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, LOW);
-  digitalWrite(RIGHT_4, LOW);
-  delay(200);
-  digitalWrite(LEFT_1, LOW);
-  digitalWrite(LEFT_2, LOW);
-  digitalWrite(LEFT_3, LOW);
-  digitalWrite(LEFT_4, HIGH);
-  digitalWrite(RIGHT_1, LOW);
-  digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, LOW);
-  digitalWrite(RIGHT_4, LOW);
-  delay(200);
-  digitalWrite(LEFT_1, LOW);
-  digitalWrite(LEFT_2, LOW);
-  digitalWrite(LEFT_3, LOW);
-  digitalWrite(LEFT_4, LOW);
-  digitalWrite(RIGHT_1, HIGH);
-  digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, LOW);
-  digitalWrite(RIGHT_4, LOW);
-  delay(200);
-  digitalWrite(LEFT_1, LOW);
-  digitalWrite(LEFT_2, LOW);
-  digitalWrite(LEFT_3, LOW);
-  digitalWrite(LEFT_4, LOW);
-  digitalWrite(RIGHT_1, LOW);
-  digitalWrite(RIGHT_2, HIGH);
-  digitalWrite(RIGHT_3, LOW);
-  digitalWrite(RIGHT_4, LOW);
-  delay(200);
-  digitalWrite(LEFT_1, LOW);
-  digitalWrite(LEFT_2, LOW);
-  digitalWrite(LEFT_3, LOW);
-  digitalWrite(LEFT_4, LOW);
-  digitalWrite(RIGHT_1, LOW);
-  digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, HIGH);
-  digitalWrite(RIGHT_4, LOW);
-  delay(200);
-  digitalWrite(LEFT_1, LOW);
-  digitalWrite(LEFT_2, LOW);
-  digitalWrite(LEFT_3, LOW);
-  digitalWrite(LEFT_4, LOW);
-  digitalWrite(RIGHT_1, LOW);
-  digitalWrite(RIGHT_2, LOW);
-  digitalWrite(RIGHT_3, LOW);
-  digitalWrite(RIGHT_4, HIGH);
-  delay(200);
-  on();
-  delay(400);
-}
-
-/*** Helper procedures go below here ***/
-
-/* Turn all lights off */
-void off() {
- digitalWrite(LEFT_1, LOW);
- digitalWrite(LEFT_2, LOW);
- digitalWrite(LEFT_3, LOW);
- digitalWrite(LEFT_4, LOW);
- digitalWrite(RIGHT_1, LOW);
- digitalWrite(RIGHT_2, LOW);
- digitalWrite(RIGHT_3, LOW);
- digitalWrite(RIGHT_4, LOW);
-}
-
-/* Turn all lights on */
-void on() {
- digitalWrite(LEFT_1, HIGH);
- digitalWrite(LEFT_2, HIGH);
- digitalWrite(LEFT_3, HIGH);
- digitalWrite(LEFT_4, HIGH);
- digitalWrite(RIGHT_1, HIGH);
- digitalWrite(RIGHT_2, HIGH);
- digitalWrite(RIGHT_3, HIGH);
- digitalWrite(RIGHT_4, HIGH);
-}
+  while (true) {
+    if (checkButton()) {
+      return;
+    }
+  }
+} 
 
 /* Light up the left leg */
-void leftLeg() {
- digitalWrite(LEFT_1, HIGH);
- digitalWrite(LEFT_2, HIGH);
- digitalWrite(LEFT_3, HIGH);
- digitalWrite(LEFT_4, HIGH);
- digitalWrite(RIGHT_1, LOW);
- digitalWrite(RIGHT_2, LOW);
- digitalWrite(RIGHT_3, LOW);
- digitalWrite(RIGHT_4, LOW);
+void left(boolean l1, boolean l2, boolean l3, boolean l4) {
+ digitalWrite(LEFT_1, l1 ? HIGH : LOW);
+ digitalWrite(LEFT_2, l2 ? HIGH : LOW);
+ digitalWrite(LEFT_3, l3 ? HIGH : LOW);
+ digitalWrite(LEFT_4, l4 ? HIGH : LOW);
 }
 
 /* Light up the right leg */
-void rightLeg() {
- digitalWrite(LEFT_1, LOW);
- digitalWrite(LEFT_2, LOW);
- digitalWrite(LEFT_3, LOW);
- digitalWrite(LEFT_4, LOW);
- digitalWrite(RIGHT_1, HIGH);
- digitalWrite(RIGHT_2, HIGH);
- digitalWrite(RIGHT_3, HIGH);
- digitalWrite(RIGHT_4, HIGH);
+void right(boolean r1, boolean r2, boolean r3, boolean r4) {
+ digitalWrite(RIGHT_1, r1 ? HIGH : LOW);
+ digitalWrite(RIGHT_2, r2 ? HIGH : LOW);
+ digitalWrite(RIGHT_3, r3 ? HIGH : LOW);
+ digitalWrite(RIGHT_4, r4 ? HIGH : LOW);
 }
 
-void toggleLight() {
-  if (leftOn) {
-    rightLeg();
-    leftOn = false;
-  } else {
-    leftLeg();
-    leftOn = true;
-  }
-}
-
+/* true if button pressed (this procedure to avoid contact bounce) */
 boolean checkButton() {
   if ((digitalRead(MODE_BUTTON) == HIGH) && buttonReady) {
-    runningMode = (runningMode + 1) % 3;
+    mode = (mode + 1) % 3;
     buttonReady = !buttonReady;
     return true;
   } else if ((digitalRead(MODE_BUTTON) == LOW) && !buttonReady) {
@@ -324,3 +217,68 @@ boolean checkButton() {
     return false;
   }
 }
+
+/* blink all lights once when mode changed */
+void modeChange() {
+  left(0,0,0,0);
+  right(0,0,0,0);
+  delay(400);
+  left(1,1,1,1);
+  right(1,1,1,1);
+  delay(200);
+  left(0,0,0,0);
+  right(0,0,0,0);
+  delay(200);
+  left(1,1,1,1);
+  right(1,1,1,1);
+  delay(200);
+  left(0,0,0,0);
+  right(0,0,0,0);
+  delay(500);
+}
+
+/* pattern displayed when device powered on */
+void powerOn() {
+  
+  /* left leg first */
+  right(0,0,0,0);
+  
+  left(1,0,0,0);
+  delay(200);
+  left(0,1,0,0);
+  delay(200);
+  left(0,0,1,0);
+  delay(200);
+  left(0,0,0,1);
+  delay(200);
+  
+  /* then right leg */
+  left(0,0,0,0);
+  
+  right(1,0,0,0);
+  delay(200);
+  right(0,1,0,0);
+  delay(200);
+  right(0,0,1,0);
+  delay(200);
+  right(0,0,0,1);
+  delay(200);
+  
+  /* then all on */
+  left(1,1,1,1);
+  right(1,1,1,1);
+  delay(400);
+}
+
+void toggleLight() {
+  if (leftOn) {
+    right(1,1,1,1);
+    left(0,0,0,0);
+    leftOn = false;
+  } else {
+    left(1,1,1,1);
+    right(0,0,0,0);
+    leftOn = true;
+  }
+}
+  
